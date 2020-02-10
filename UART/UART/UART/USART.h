@@ -61,5 +61,7 @@ void USART_Init(En_USART_MODE_t USART_MODE, En_USART_RECEIVE_TRANSMIT_t USART_RX
 void USART_SEND_POLLING(uint8_t Data);
 uint8_t USART_Receive_POLLING(void);
 void UART_Send_String(uint8_t* str);
+uint8_t USART_Receive_NO_POLLING(void);
+void USART_SEND_NO_POLLING(uint8_t Data);
 
 #endif /* USART_H_ */

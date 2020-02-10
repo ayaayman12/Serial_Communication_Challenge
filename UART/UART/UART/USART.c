@@ -32,14 +32,7 @@ void USART_Init(En_USART_MODE_t USART_MODE, En_USART_RECEIVE_TRANSMIT_t USART_RX
 }
 
 
-void UART_inti()
-{
-	
-	UBRRL=103;
-	UCSRB=0x18;
-	UCSRC=0x86;
-	
-}
+
 void USART_SEND_POLLING(uint8_t Data)
 {
 	 while (!(UCSRA&(1<<UDRE)));  //waiting for the transmit buffer (UDR) to be empty
@@ -59,4 +52,16 @@ void UART_Send_String(uint8_t* str)
 	while(str[i] != '\0')
 	USART_SEND_POLLING(str[i++]);
 }
+void USART_SEND_NO_POLLING(uint8_t Data)
+{
+	UDR=Data;
+}
+
+uint8_t USART_Receive_NO_POLLING(void)
+{
+	
+	return UDR;
+	
+}
+
 

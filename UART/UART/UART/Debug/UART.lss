@@ -11,21 +11,21 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, READONLY
   3 .note.gnu.avr.deviceinfo 0000003c  00000000  00000000  000003c8  2**2
                   CONTENTS, READONLY
-  4 .debug_aranges 000000f0  00000000  00000000  00000404  2**0
+  4 .debug_aranges 000000f8  00000000  00000000  00000404  2**0
                   CONTENTS, READONLY, DEBUGGING
-  5 .debug_info   00001152  00000000  00000000  000004f4  2**0
+  5 .debug_info   0000117f  00000000  00000000  000004fc  2**0
                   CONTENTS, READONLY, DEBUGGING
-  6 .debug_abbrev 00000861  00000000  00000000  00001646  2**0
+  6 .debug_abbrev 0000084b  00000000  00000000  0000167b  2**0
                   CONTENTS, READONLY, DEBUGGING
-  7 .debug_line   000006a0  00000000  00000000  00001ea7  2**0
+  7 .debug_line   000006b0  00000000  00000000  00001ec6  2**0
                   CONTENTS, READONLY, DEBUGGING
-  8 .debug_frame  00000190  00000000  00000000  00002548  2**2
+  8 .debug_frame  000001a0  00000000  00000000  00002578  2**2
                   CONTENTS, READONLY, DEBUGGING
-  9 .debug_str    0000080c  00000000  00000000  000026d8  2**0
+  9 .debug_str    00000831  00000000  00000000  00002718  2**0
                   CONTENTS, READONLY, DEBUGGING
- 10 .debug_loc    00000b82  00000000  00000000  00002ee4  2**0
+ 10 .debug_loc    00000b82  00000000  00000000  00002f49  2**0
                   CONTENTS, READONLY, DEBUGGING
- 11 .debug_ranges 000000b0  00000000  00000000  00003a66  2**0
+ 11 .debug_ranges 000000b8  00000000  00000000  00003acb  2**0
                   CONTENTS, READONLY, DEBUGGING
 
 Disassembly of section .text:
@@ -470,44 +470,63 @@ int main(void)
  25a:	ee cf       	rjmp	.-36     	; 0x238 <main+0x36>
 
 0000025c <USART_Init>:
-void UART_inti()
+#include "led.h"
+void USART_Init(En_USART_MODE_t USART_MODE, En_USART_RECEIVE_TRANSMIT_t USART_RX_TX, En_USART_CHAR_DATA_NUMBER_t CHAR_DATA_NUMBER,\
+                En_USART_PARITY_MODE_t USART_PARITY, En_USART_CLOCK_POLARITY_t USART_CLOCK_POLARITY,En_USART_STOP_BIT_SELECT_t STOP_BIT_SELECT,\
+					 En_USART_INTERRUPTS_t USART_INTERRUPTS,En_USART_BAUD_RATE_SELECT_t USART_BAUD_RATE_SELECT)
+
 {
-	
-	UBRRL=103;
-	UCSRB=0x18;
-	UCSRC=0x86;
  25c:	af 92       	push	r10
  25e:	cf 92       	push	r12
  260:	ef 92       	push	r14
  262:	0f 93       	push	r16
+	 /* this bit must be cleared before writing at UBRR*/
+	 UCSRC=0X00;
  264:	10 bc       	out	0x20, r1	; 32
+	 UCSRB=0x00;
  266:	1a b8       	out	0x0a, r1	; 10
+	 UCSRB|=USART_RX_TX;
  268:	9a b1       	in	r25, 0x0a	; 10
  26a:	69 2b       	or	r22, r25
  26c:	6a b9       	out	0x0a, r22	; 10
+	 UCSRB|=USART_INTERRUPTS;
  26e:	9a b1       	in	r25, 0x0a	; 10
  270:	c9 2a       	or	r12, r25
  272:	ca b8       	out	0x0a, r12	; 10
+	 UBRRL= USART_BAUD_RATE_SELECT;
  274:	a9 b8       	out	0x09, r10	; 9
+	 UBRRH =(USART_BAUD_RATE_SELECT>>8);
  276:	10 bc       	out	0x20, r1	; 32
+	 
+	/* this bit must be cleared before writing at UCSRC*/
+	 UCSRC|=(0x80);
  278:	90 b5       	in	r25, 0x20	; 32
  27a:	90 68       	ori	r25, 0x80	; 128
  27c:	90 bd       	out	0x20, r25	; 32
+	 UCSRC|=USART_MODE;
  27e:	90 b5       	in	r25, 0x20	; 32
  280:	89 2b       	or	r24, r25
  282:	80 bd       	out	0x20, r24	; 32
+	 UCSRC|= USART_CLOCK_POLARITY;
  284:	80 b5       	in	r24, 0x20	; 32
  286:	08 2b       	or	r16, r24
  288:	00 bd       	out	0x20, r16	; 32
+	 UCSRC|=CHAR_DATA_NUMBER;
  28a:	80 b5       	in	r24, 0x20	; 32
  28c:	48 2b       	or	r20, r24
  28e:	40 bd       	out	0x20, r20	; 32
+	 UCSRC|=STOP_BIT_SELECT;
  290:	80 b5       	in	r24, 0x20	; 32
  292:	e8 2a       	or	r14, r24
  294:	e0 bc       	out	0x20, r14	; 32
+	 UCSRC|=USART_PARITY;
  296:	80 b5       	in	r24, 0x20	; 32
  298:	28 2b       	or	r18, r24
  29a:	20 bd       	out	0x20, r18	; 32
+   // UCSRC = 0x06;
+	 //UCSRC&=~(0x80);
+
+}
  29c:	0f 91       	pop	r16
  29e:	ef 90       	pop	r14
  2a0:	cf 90       	pop	r12
@@ -515,8 +534,9 @@ void UART_inti()
  2a4:	08 95       	ret
 
 000002a6 <USART_SEND_POLLING>:
-	
-}
+
+
+
 void USART_SEND_POLLING(uint8_t Data)
 {
 	 while (!(UCSRA&(1<<UDRE)));  //waiting for the transmit buffer (UDR) to be empty

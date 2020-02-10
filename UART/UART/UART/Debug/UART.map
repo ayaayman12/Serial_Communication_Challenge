@@ -35,8 +35,10 @@ Discarded input sections
  .text          0x00000000        0x0 USART.o
  .data          0x00000000        0x0 USART.o
  .bss           0x00000000        0x0 USART.o
- .text.UART_inti
-                0x00000000        0xe USART.o
+ .text.USART_SEND_NO_POLLING
+                0x00000000        0x4 USART.o
+ .text.USART_Receive_NO_POLLING
+                0x00000000        0x4 USART.o
  .text          0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr5\libgcc.a(_exit.o)
  .data          0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr5\libgcc.a(_exit.o)
  .bss           0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr5\libgcc.a(_exit.o)
@@ -425,7 +427,7 @@ END GROUP
 .debug_sfnames
  *(.debug_sfnames)
 
-.debug_aranges  0x00000000       0xf0
+.debug_aranges  0x00000000       0xf8
  *(.debug_aranges)
  .debug_aranges
                 0x00000000       0x58 gpio.o
@@ -434,43 +436,43 @@ END GROUP
  .debug_aranges
                 0x00000090       0x20 main.o
  .debug_aranges
-                0x000000b0       0x40 USART.o
+                0x000000b0       0x48 USART.o
 
 .debug_pubnames
  *(.debug_pubnames)
 
-.debug_info     0x00000000     0x1152
+.debug_info     0x00000000     0x117f
  *(.debug_info .gnu.linkonce.wi.*)
  .debug_info    0x00000000      0x4e6 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.2.209/gcc/dev/atmega32/avr5/crtatmega32.o
  .debug_info    0x000004e6      0x275 gpio.o
  .debug_info    0x0000075b      0x366 led.o
  .debug_info    0x00000ac1      0x36a main.o
- .debug_info    0x00000e2b      0x327 USART.o
+ .debug_info    0x00000e2b      0x354 USART.o
 
-.debug_abbrev   0x00000000      0x861
+.debug_abbrev   0x00000000      0x84b
  *(.debug_abbrev)
  .debug_abbrev  0x00000000      0x4a3 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.2.209/gcc/dev/atmega32/avr5/crtatmega32.o
  .debug_abbrev  0x000004a3       0xcd gpio.o
  .debug_abbrev  0x00000570       0xb2 led.o
  .debug_abbrev  0x00000622      0x12a main.o
- .debug_abbrev  0x0000074c      0x115 USART.o
+ .debug_abbrev  0x0000074c       0xff USART.o
 
-.debug_line     0x00000000      0x6a0
+.debug_line     0x00000000      0x6b0
  *(.debug_line .debug_line.* .debug_line_end)
  .debug_line    0x00000000      0x115 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.2.209/gcc/dev/atmega32/avr5/crtatmega32.o
  .debug_line    0x00000115      0x218 gpio.o
  .debug_line    0x0000032d      0x13d led.o
  .debug_line    0x0000046a      0x104 main.o
- .debug_line    0x0000056e      0x132 USART.o
+ .debug_line    0x0000056e      0x142 USART.o
 
-.debug_frame    0x00000000      0x190
+.debug_frame    0x00000000      0x1a0
  *(.debug_frame)
  .debug_frame   0x00000000       0x94 gpio.o
  .debug_frame   0x00000094       0x54 led.o
  .debug_frame   0x000000e8       0x24 main.o
- .debug_frame   0x0000010c       0x84 USART.o
+ .debug_frame   0x0000010c       0x94 USART.o
 
-.debug_str      0x00000000      0x80c
+.debug_str      0x00000000      0x831
  *(.debug_str)
  .debug_str     0x00000000      0x196 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.2.209/gcc/dev/atmega32/avr5/crtatmega32.o
  .debug_str     0x00000196      0x205 gpio.o
@@ -479,8 +481,8 @@ END GROUP
                                 0x214 (size before relaxing)
  .debug_str     0x0000042c      0x326 main.o
                                 0x4c4 (size before relaxing)
- .debug_str     0x00000752       0xba USART.o
-                                0x4e6 (size before relaxing)
+ .debug_str     0x00000752       0xdf USART.o
+                                0x50b (size before relaxing)
 
 .debug_loc      0x00000000      0xb82
  *(.debug_loc)
@@ -507,12 +509,12 @@ END GROUP
 .debug_pubtypes
  *(.debug_pubtypes)
 
-.debug_ranges   0x00000000       0xb0
+.debug_ranges   0x00000000       0xb8
  *(.debug_ranges)
  .debug_ranges  0x00000000       0x48 gpio.o
  .debug_ranges  0x00000048       0x28 led.o
  .debug_ranges  0x00000070       0x10 main.o
- .debug_ranges  0x00000080       0x30 USART.o
+ .debug_ranges  0x00000080       0x38 USART.o
 
 .debug_macro
  *(.debug_macro)
